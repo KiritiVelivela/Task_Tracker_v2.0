@@ -182,13 +182,13 @@
   </header>
 
   <article style="float:left; width:49.5%; height: 25%; margin-right: 0.5%; background-color: white;" >
-    <p id="notice"><%= notice %></p>
+
 <br>
     <%= render 'form', issue: @issue %>
   </article>
 
 
-  <article style="float:right; width:50%; background-color: white; padding-bottom: 10.2%; ">
+  <article style="float:right; width:50%; background-color: white; padding-bottom: 8.5%; ">
 
     </ul>
 
@@ -202,10 +202,10 @@
 
 
 
-
-      <% @issues.each do |isco| %>
+<% @iss = Issue.all %>
+      <% @iss.each do |isco| %>
             <% if issue.name != isco.name %>
-              <% if issue.created_at > isco.created_at %>
+
                 <% @similarity = "#{issue.name}".similar("#{isco.name}") %>
                 <% if @similarity.to_s >= "40" %>
 
@@ -218,7 +218,7 @@
 
 
                     <%end%>
-                    <%end%>
+
                 <%end%>
             <% end %>
                 <div id="plan">
