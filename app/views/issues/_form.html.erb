@@ -15,6 +15,7 @@
     color: white;
     padding: 14px 20px;
     margin: 0px 0;
+    margin-left: 10%;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -32,13 +33,13 @@
 </style>
 <body>
 
-  <h2 style="margin-left: 10%">Create a Task</h2><br>
+  <h2 style="margin-left: 17%">Create a Task</h2><br>
 <%= form_with(model: issue, local: true) do |form| %>
 
   <div class="actions" style="margin-left: 10%; margin-right: 20%; margin-bottom: 5%">
     <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Task Name</h3>
     <div class="field">
-      <%= form.text_field :name, id: :issue_name %>
+      <%= form.text_field :name, id: :issue_name, :required => true %>
     </div>
     <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Date</h3>
     <div class="field">
@@ -47,7 +48,7 @@
     </div>
     <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Assigned to</h3>
     <div class="field">
-      <%= form.collection_select :user_id, User.all,:id,:username, :prompt => "Please Select user", presence: true %>
+      <%= form.collection_select :user_id, User.all,:id,:username, :include_blank => "Select One user", :required => true %>
     </div>
 
     <%= form.submit "Submit" %>
