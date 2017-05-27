@@ -1,0 +1,58 @@
+<style>
+  input[type=text], select {
+    width: 80%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ebeaea ;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 8px 0 8px 10%;
+  }
+
+  input[type=submit] {
+    width: 20%;
+    background-color: #999999;
+    color: white;
+    padding: 14px 20px;
+    margin: 0px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+  input[type=text] {
+    background-color: #ebeaea;
+  }
+
+
+</style>
+<body>
+
+  <h2 style="margin-left: 10%">Create a Task</h2><br>
+<%= form_with(model: issue, local: true) do |form| %>
+
+      <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Task Name</h3>
+  <div class="field">
+    <%= form.text_field :name, id: :issue_name %>
+  </div>
+      <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Date</h3>
+  <div class="field">
+
+    <%= form.date_select :date, id: :issue_date %>
+  </div>
+      <h3 style="margin-left: 10%; margin-bottom: 1%; margin-right: 20%">Assigned to</h3>
+  <div class="field">
+    <%= form.collection_select :user_id, User.all,:id,:username, :prompt => "Please Select user", presence: true %>
+  </div>
+
+  <div class="actions" style="margin-left: 10%; margin-right: 20%; margin-bottom: 5%">
+    <%= form.submit "Submit" %>
+  </div>
+
+<% end %>
+
+</body>

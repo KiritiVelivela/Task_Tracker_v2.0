@@ -1,0 +1,250 @@
+<% require 'similar_text'%>
+<!DOCTYPE html>
+
+<html style="background-color: #ebeaea; margin-left: 0.5%; margin-right: 0.5%;">
+<head>
+<style>
+
+
+  header, footer {
+    padding: 2em;
+    color: white;
+    background-color: #ebeaea;
+    clear: left;
+    text-align: left;
+  }
+
+  #plan{
+    width: 80%;
+    height:60px;
+    background-color: white;
+    margin: 8px 0 20px 10%;
+    margin-top: 3px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
+
+
+  }
+
+  .containDetails{
+    max-width: 100%;
+    float:left;
+    margin-top: 6px;
+    padding-left: 6px;
+  }
+
+  .details li{
+    display:inline-block;
+    margin:0px;
+    font-size: 15px;
+    font-family:'Open Sans';
+    font-weight:bold;
+    padding-left: 8px;
+  }
+
+  .first{
+    margin-left: 1%;
+    font-weight: bold;
+    color: black;
+    padding-right: 6px;
+
+  }
+
+  .details{
+    padding:0px;
+    float:left;
+  }
+  .details li span{
+    font-size:15px;
+    text-transform:uppercase;
+  }
+
+  .details li span:before{
+    content: '\a' ;
+    white-space: pre;
+  }
+
+  .select{
+    margin-top: 0;
+    margin-left: 40px;
+  }
+  .end{
+    width: 20px;
+    height: 10px;
+
+    float: left;
+    position: relative;
+    left: 640px;
+
+  }
+
+  .select1{
+    margin-top: 0px;
+    margin-left: 1px;
+  }
+  .end1{
+    width: 200px;
+    height: 0px;
+
+    float: left;
+    position: relative;
+    left: 87px;
+    bottom: 7px;
+
+
+
+  }
+
+  .button-pill {
+
+    border-bottom-left-radius: 20px 50px;
+    border-bottom-right-radius: 20px 50px;
+    border-top-left-radius: 20px 50px;
+    border-top-right-radius: 20px 50px;
+
+
+  }
+
+  .button {
+    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+    background-color: #eeeeee;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fbfbfb), color-stop(100%, #e1e1e1));
+    background: -webkit-linear-gradient(top, #fbfbfb, #e1e1e1);
+    background: -moz-linear-gradient(top, #fbfbfb, #e1e1e1);
+    background: -o-linear-gradient(top, #fbfbfb, #e1e1e1);
+    background: linear-gradient(top, #fbfbfb, #e1e1e1);
+    display: -moz-inline-stack;
+    display: inline-block;
+
+    zoom: 1;
+    border: 1px solid #d4d4d4;
+
+    padding: 0px 10px;
+    font-weight: bold;
+    font-size: 10px;
+    font-family:'Open Sans';
+    color: black;
+
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .button-flat-royal {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition-property: background;
+    -moz-transition-property: background;
+    -o-transition-property: background;
+    transition-property: background;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    background:   #fb5401;
+    color: white;
+    text-shadow: none;
+    border: none;
+  }
+
+  </style>
+
+</head>
+<body style="margin: 0;">
+
+<div class="container">
+  <header>
+    <h1 style="color: black; font-size: xx-large">Task Tracker <br> <sub style="color: #7b7775;">v 2.0</sub></h1>
+    <% if flash[:error] %>
+        <div id="error">
+          <%= flash[:error] %>
+        </div>
+    <% end %>
+    <div id="container" style="text-align: right">
+      <div id="user_status" style="color: black">
+        <% if user_signed_in? %>
+            Welcome <%= current_user.email %>! Not you?
+            <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+        <% else %>
+            <%= link_to "Sign up", new_user_registration_path %> or
+            <%= link_to "Sign in", new_user_session_path %>.
+        <% end %>
+      </div>
+      <%= yield %>
+    </div>
+
+  </header>
+
+  <article style="float:left; width:49.5%; height: 25%; margin-right: 0.5%; background-color: white;" >
+    <p id="notice"><%= notice %></p>
+<br>
+    <%= render 'form', issue: @issue %>
+  </article>
+
+
+  <article style="float:right; width:50%; background-color: white; padding-bottom: 10.2%; ">
+
+    </ul>
+
+<br><br>
+    <h1 style="margin: 8px 0 0 10%;">Existing Tasks</h1>
+<br><br><br><br>
+
+
+<%@issues = Issue.all.order('created_at DESC').limit('4')%>
+        <% @issues.each do |issue| %>
+
+
+
+
+      <% @issues.each do |isco| %>
+            <% if issue.name != isco.name %>
+              <% if issue.created_at > isco.created_at %>
+                <% @similarity = "#{issue.name}".similar("#{isco.name}") %>
+                <% if @similarity.to_s >= "40" %>
+
+                            <div class="end1">
+                              <div class="select1">
+                                <a href="#" class="button button-flat-royal button-pill" style="color: black"><%= flash.now[:notice] = "possible duplicate" %></a>
+                              </div></div>
+
+
+
+
+                    <%end%>
+                    <%end%>
+                <%end%>
+            <% end %>
+                <div id="plan">
+      <div class="containDetails">
+        <ul class="details">
+          <li class="first"> <%= issue.name %> </li>
+          <li style="color:  #9e9e9e; font-size: 10px; padding-left: 10px"> <%= issue.date.strftime("%m/%d/%Y") %> </li>
+          <li style="font-size: 15px; color: gray;position: absolute; right: 12%; width: 100px; text-align:right; "> <%= issue.user.username %> </li>
+          <div class="end">
+            <div class="select">
+              <%= link_to image_tag("Trash.png", :width => 20, :height => 15), issue, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </div></div>
+        </ul>
+      </div>
+
+    </div>
+
+    <%end%>
+
+
+        </article>
+
+
+</div>
+
+</body>
+</html>
+
+
